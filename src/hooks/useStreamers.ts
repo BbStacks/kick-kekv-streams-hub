@@ -20,7 +20,9 @@ const KICK_USERNAMES = [
   'reynmen',
   'pintipanda',
   'jahrein',
-  'skygun'
+  'skygun',
+  'ramee',
+  'odisnos'
 ];
 
 const transformKickData = (kickData: KickChannelData): StreamerData => {
