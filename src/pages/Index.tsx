@@ -5,75 +5,13 @@ import StreamerCard from '@/components/StreamerCard';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, Users, Zap } from 'lucide-react';
-
-// Örnek yayıncı verileri - gerçek verilerle değiştirilebilir
-const streamers = [
-  {
-    id: 1,
-    name: "Enes Batur",
-    username: "enesbatur",
-    isLive: true,
-    viewers: 2450,
-    category: "GTA V - FiveM KEKV",
-    kickUrl: "https://kick.com/enesbatur",
-    thumbnail: "/placeholder.svg"
-  },
-  {
-    id: 2,
-    name: "Pqueen",
-    username: "pqueen",
-    isLive: true,
-    viewers: 1850,
-    category: "GTA V - FiveM KEKV",
-    kickUrl: "https://kick.com/pqueen",
-    thumbnail: "/placeholder.svg"
-  },
-  {
-    id: 3,
-    name: "Orkun Işıtmak",
-    username: "orkunisitmak",
-    isLive: false,
-    viewers: 0,
-    category: "GTA V - FiveM KEKV",
-    kickUrl: "https://kick.com/orkunisitmak",
-    thumbnail: "/placeholder.svg"
-  },
-  {
-    id: 4,
-    name: "Reynmen",
-    username: "reynmen",
-    isLive: true,
-    viewers: 3200,
-    category: "GTA V - FiveM KEKV",
-    kickUrl: "https://kick.com/reynmen",
-    thumbnail: "/placeholder.svg"
-  },
-  {
-    id: 5,
-    name: "Pintipanda",
-    username: "pintipanda",
-    isLive: false,
-    viewers: 0,
-    category: "GTA V - FiveM KEKV",
-    kickUrl: "https://kick.com/pintipanda",
-    thumbnail: "/placeholder.svg"
-  },
-  {
-    id: 6,
-    name: "Jahrein",
-    username: "jahrein",
-    isLive: true,
-    viewers: 5670,
-    category: "GTA V - FiveM KEKV",
-    kickUrl: "https://kick.com/jahrein",
-    thumbnail: "/placeholder.svg"
-  }
-];
+import { Search, Filter, Users, Zap, RefreshCw, Loader2 } from 'lucide-react';
+import { useStreamers } from '@/hooks/useStreamers';
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLive, setFilterLive] = useState(false);
+  const { streamers, loading, error, refreshStreamers } = useStreamers();
   
   const filteredStreamers = streamers.filter(streamer => {
     const matchesSearch = streamer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -84,6 +22,34 @@ const Index = () => {
   
   const liveStreamers = streamers.filter(s => s.isLive);
   const totalViewers = liveStreamers.reduce((sum, s) => sum + s.viewers, 0);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 text-neon-purple animate-spin mx-auto mb-4" />
+          <p className="text-white text-xl">Yayıncı verileri yükleniyor...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="glass-effect rounded-xl p-8 max-w-md mx-auto">
+            <h3 className="text-xl font-semibold text-white mb-2">Hata Oluştu</h3>
+            <p className="text-white/60 mb-4">{error}</p>
+            <Button onClick={refreshStreamers} className="bg-neon-purple hover:bg-neon-pink">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Tekrar Dene
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -142,6 +108,15 @@ const Index = () => {
               >
                 <Filter className="w-4 h-4 mr-2" />
                 Sadece Canlı
+              </Button>
+              
+              <Button
+                variant="outline"
+                onClick={refreshStreamers}
+                className="border-white/20 text-white hover:bg-white/10"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Yenile
               </Button>
             </div>
           </div>
