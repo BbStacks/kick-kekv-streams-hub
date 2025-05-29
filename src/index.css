@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -97,5 +98,29 @@
 
   body {
     @apply bg-background text-foreground;
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    min-height: 100vh;
   }
+}
+
+.neon-text {
+  color: #fff;
+  text-shadow: 
+    0 0 5px #a855f7,
+    0 0 10px #a855f7,
+    0 0 15px #a855f7,
+    0 0 20px #a855f7;
+}
+
+.neon-border {
+  border: 2px solid #a855f7;
+  box-shadow: 
+    0 0 5px #a855f7,
+    inset 0 0 5px #a855f7;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
